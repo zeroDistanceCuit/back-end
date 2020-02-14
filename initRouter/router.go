@@ -13,6 +13,7 @@ func SetupRouter() *gin.Engine {
 	test := router.Group("/api/test")
 	{
 		test.GET("/", handler.Test)
+		test.POST("/insert",handler.Insert)
 	}
 	return router
 }
