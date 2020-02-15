@@ -2,6 +2,7 @@ package model
 
 import (
 	"back_end/config/initDB"
+	"fmt"
 )
 
 type TestModel struct {
@@ -33,7 +34,8 @@ func (test TestModel)FindById() TestModel {
 }
 
 //更新所有字段
-func (test TestModel)Save()  {
+func (test TestModel)SaveHandler()  {
+	fmt.Println(test)
 	initDB.Db.Save(&test)
 }
 
