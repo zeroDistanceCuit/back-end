@@ -5,3 +5,6 @@
 3. jwt
 4. Swagger
 5. ORM-gorm
+
+
+~swag 集成出现不可知问题~

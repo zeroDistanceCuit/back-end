@@ -1,0 +1,54 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Zero-Distance 项目后端",
+        "title": "Gin swagger",
+        "contact": {
+            "name": "merlynr",
+            "url": "https://blog.fanyan.vip",
+            "email": "lcq1013962426@gmail.com"
+        },
+        "license": {},
+        "version": "1.0"
+    },
+    "host": "localhost:2333",
+    "paths": {
+        "/api/test/findAll": {
+            "get": {
+                "consumes": [
+                    "application/x-json-stream"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "测试mysql-查询所有数据",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultModel"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.ResultModel": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "type": "object"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "请求信息"
+                }
+            }
+        }
+    }
+}

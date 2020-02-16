@@ -1,0 +1,36 @@
+definitions:
+  model.ResultModel:
+    properties:
+      code:
+        example: 0
+        type: integer
+      data:
+        type: object
+      message:
+        example: 请求信息
+        type: string
+    type: object
+host: localhost:2333
+info:
+  contact:
+    email: lcq1013962426@gmail.com
+    name: merlynr
+    url: https://blog.fanyan.vip
+  description: Zero-Distance 项目后端
+  license: {}
+  title: Gin swagger
+  version: "1.0"
+paths:
+  /api/test/findAll:
+    get:
+      consumes:
+      - application/x-json-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResultModel'
+      summary: 测试mysql-查询所有数据
+      tags:
+      - test
+swagger: "2.0"
