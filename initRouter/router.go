@@ -2,15 +2,16 @@ package initRouter
 
 import (
 	"back_end/handler"
+	"back_end/middleware"
 	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func SetupRouter() *gin.Engine {
 
 	//中间件
-	router := gin.Default()
+	//router := gin.Default()
+	router:=gin.New()
+	router.Use(middleware.Logger(),gin.Recovery())
 
 	test := router.Group("/api/test")
 	{
@@ -22,9 +23,16 @@ func SetupRouter() *gin.Engine {
 		test.POST("/update/:id",handler.Update)
 	}
 
-	//seag集成
-	url := ginSwagger.URL("http://localhost:2333/swagger/doc.json")
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	api:=router.Group("/api")
+	{
+		api.POST("/register",handler.Register)
+	}
+
+
+
+	//swag集成
+	//url := ginSwagger.URL("http://localhost:2333/swagger/doc.json")
+	//router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	return router
 }
