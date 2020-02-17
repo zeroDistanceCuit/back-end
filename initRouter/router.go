@@ -13,9 +13,9 @@ func SetupRouter() *gin.Engine {
 	router:=gin.New()
 	router.Use(middleware.Logger(),gin.Recovery())
 
-	test := router.Group("/api/test")
+	test := router.Group("/test")
 	{
-		test.GET("/", handler.Test)
+		test.GET("", handler.Test)
 		test.POST("/insert",handler.Insert)
 		test.GET("/findAll",handler.GetAll)
 		test.DELETE("/delete/:id",handler.Delete)
@@ -23,7 +23,7 @@ func SetupRouter() *gin.Engine {
 		test.POST("/update/:id",handler.Update)
 	}
 
-	api:=router.Group("/api")
+	api:=router.Group("/user")
 	{
 		api.POST("/register",handler.Register)
 	}

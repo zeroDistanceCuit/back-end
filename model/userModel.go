@@ -1,6 +1,8 @@
 package model
 
-import "back_end/config/initDB"
+import (
+	"back_end/config/initDB"
+)
 
 type UserModel struct {
 	Id      int
