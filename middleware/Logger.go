@@ -13,6 +13,6 @@ func Logger() gin.HandlerFunc {
 		method := context.Request.Method
 		fmt.Printf("%s::%s \t %s \t %s ", time.Now().Format("2006-01-02 15:04:05"), url, method)
 		context.Next()
-		fmt.Println(context.Writer.Status())
+		fmt.Println(context.Writer.Status(),"author:: Merlynr")
 	}
 }

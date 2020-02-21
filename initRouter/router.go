@@ -22,10 +22,13 @@ func SetupRouter() *gin.Engine {
 		test.GET("/getOne/:id",handler.GetOne)
 		test.POST("/update/:id",handler.Update)
 	}
+	
 
 	api:=router.Group("/user")
 	{
+		api.POST("/login",handler.CreateJwt)
 		api.POST("/register",handler.Register)
+		api.GET("/findAll",middleware.Auth(),handler.GetAll)
 	}
 
 
