@@ -35,6 +35,6 @@ func (user UserModel) Insert() int {
 }
 
 func (user UserModel) QueryByUsername() UserModel {
-	initDB.Db.First(&user, user.Name)
+	initDB.Db.Where("name = ?", user.Name).Find(&user)
 	return user
 }

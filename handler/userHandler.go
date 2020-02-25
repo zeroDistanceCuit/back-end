@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"back_end/model"
 	"back_end/config/authConfig"
-	"fmt"
-	"github.com/gin-gonic/gin"
+	"back_end/model"
+	_ "fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"time"
@@ -16,14 +16,6 @@ func Register(ctx *gin.Context)  {
 	var id=-1
 	var message="用户注册失败"
 
-	if e:=ctx.BindJSON(&user);e==nil{
-		fmt.Println(user)
-		id=user.Insert()
-		message="用户"+user.Name+",注册成功"
-	}else {
-		log.Panicln(e)
-	}
-
 	result:=model.ResultModel{
 		Code:    http.StatusOK,
 		Message: message,
@@ -31,6 +23,25 @@ func Register(ctx *gin.Context)  {
 			"id":id,
 		},
 	}
+	if e := ctx.BindJSON(&user); e != nil {
+		result.Message = "数据绑定失败"
+		result.Code = http.StatusUnauthorized
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"result": result,
+		})
+	}
+	 if u:= user.QueryByUsername();u.Name != ""{
+		 result.Message="该账号已存在，请另起名字"
+	}else{
+		if e:=ctx.BindJSON(&user);e==nil{
+			id=user.Insert()
+			message="用户"+user.Name+",注册成功"
+		}else {
+			log.Panicln(e)
+		}
+	}
+
+
 	ctx.JSON(http.StatusOK,result)
 }
 
