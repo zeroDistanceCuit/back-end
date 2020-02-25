@@ -3,7 +3,7 @@ package handler
 import (
 	"back_end/config/authConfig"
 	"back_end/model"
-	_ "fmt"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -14,33 +14,35 @@ import (
 func Register(ctx *gin.Context)  {
 	user:=model.UserModel{}
 	var id=-1
-	var message="用户注册失败"
+	var message="用户注册失败,程序猿会马上修补bug"
+	var code=http.StatusOK
+
+	u:= user.QueryByUsername();
+
+	 if u.Name != ""{
+		 message="该账号已存在，请另起名字"
+	}else{
+		fmt.Println("step 2")
+		if e := ctx.BindJSON(&user); e == nil{
+			id=user.Insert()
+			message="用户"+user.Name+",注册成功"
+		}else {
+			message = "数据绑定失败"
+			code = http.StatusUnauthorized
+			ctx.JSON(http.StatusUnauthorized, gin.H{
+				"result": "error",
+			})
+			log.Panicln(e)
+		}
+	}
 
 	result:=model.ResultModel{
-		Code:    http.StatusOK,
+		Code:    code,
 		Message: message,
 		Data:    gin.H{
 			"id":id,
 		},
 	}
-	if e := ctx.BindJSON(&user); e != nil {
-		result.Message = "数据绑定失败"
-		result.Code = http.StatusUnauthorized
-		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"result": result,
-		})
-	}
-	 if u:= user.QueryByUsername();u.Name != ""{
-		 result.Message="该账号已存在，请另起名字"
-	}else{
-		if e:=ctx.BindJSON(&user);e==nil{
-			id=user.Insert()
-			message="用户"+user.Name+",注册成功"
-		}else {
-			log.Panicln(e)
-		}
-	}
-
 
 	ctx.JSON(http.StatusOK,result)
 }
@@ -64,7 +66,6 @@ func CreateJwt(ctx *gin.Context)  {
 	}
 
 	u:= user.QueryByUsername()
-
 	if u.Password == user.Password {
 		expiresTime := time.Now().Unix() + int64(authConfig.OneDayOfHours)
 		claims := jwt.StandardClaims{
@@ -84,6 +85,7 @@ func CreateJwt(ctx *gin.Context)  {
 			result.Code = http.StatusOK
 			ctx.JSON(result.Code, gin.H{
 				"result": result,
+				"userId":u.Id,
 			})
 		} else {
 			result.Message = "登录失败"
