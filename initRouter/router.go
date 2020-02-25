@@ -31,6 +31,12 @@ func SetupRouter() *gin.Engine {
 		api.GET("/findAll",middleware.Auth(),handler.GetAll)
 	}
 
+	bussinessapi:=router.Group("/bussiness")
+	{
+		bussinessapi.POST("/login",handler.BussinessCreateJwt)
+		bussinessapi.POST("/register",handler.BussinessRegister)
+	}
+
 
 
 	//swag集成

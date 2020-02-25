@@ -10,8 +10,8 @@ import (
 	"time"
 )
 
-func Register(ctx *gin.Context)  {
-	user:=model.UserModel{}
+func BussinessRegister(ctx *gin.Context)  {
+	user:=model.BussinessModel{}
 	var id=-1
 	var message="用户注册失败,程序猿会马上修补bug"
 	var code=http.StatusOK
@@ -26,8 +26,8 @@ func Register(ctx *gin.Context)  {
 
 	u:= user.QueryByUsername();
 
-	 if u.Name != ""{
-		 message="该账号已存在，请另起名字"
+	if u.Name != ""{
+		message="该账号已存在，请另起名字"
 	}else{
 		if e := ctx.BindJSON(&user); e == nil{
 			id=user.Insert()
@@ -53,9 +53,9 @@ func Register(ctx *gin.Context)  {
 	ctx.JSON(http.StatusOK,result)
 }
 
-func CreateJwt(ctx *gin.Context)  {
+func BussinessCreateJwt(ctx *gin.Context)  {
 	// 获取用户
-	user := &model.UserModel{}
+	user := &model.BussinessModel{}
 	result := &model.ResultModel{
 		Code:    200,
 		Message: "登录成功",
