@@ -3,7 +3,6 @@ package handler
 import (
 	"back_end/config/authConfig"
 	"back_end/model"
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -147,9 +146,7 @@ func BussinessUpdatePassW(ctx *gin.Context)  {
 	if !flag {
 		result.Message="修改失败"
 	}
-	ctx.JSON(http.StatusUnauthorized, gin.H{
+	ctx.JSON(http.StatusOK, gin.H{
 		"result": result,
 	})
-
-	fmt.Println(flag)
 }
