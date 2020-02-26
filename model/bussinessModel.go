@@ -37,3 +37,9 @@ func (user BussinessModel) UpdatePassW() bool {
 	}
 	return true
 }
+
+//查询个人信息
+func (user BussinessModel) GetOneBussinessInfo()  BussinessModel{
+	initDB.Db.First(&user,user.Id)
+	return user
+}
