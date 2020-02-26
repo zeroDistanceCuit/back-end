@@ -41,9 +41,9 @@ func (test TestModel)SaveHandler()  {
 
 //更新单个字段
 
-//func (data [string]string) Update()  {
-//
-//}
+//fnc (data [string]string) Update()  {
+////
+////}u
 
 func (test TestModel) Delete(){
 	initDB.Db.Delete(test)

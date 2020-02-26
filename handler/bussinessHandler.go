@@ -3,10 +3,12 @@ package handler
 import (
 	"back_end/config/authConfig"
 	"back_end/model"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -72,7 +74,7 @@ func BussinessCreateJwt(ctx *gin.Context)  {
 	}
 
 	u:= user.QueryByUsername()
-	if u.Password == user.Password {
+	if u.Name!="" && u.Password == user.Password {
 		expiresTime := time.Now().Unix() + int64(authConfig.OneDayOfHours)
 		claims := jwt.StandardClaims{
 			Audience:  user.Name,     // 受众
@@ -107,4 +109,47 @@ func BussinessCreateJwt(ctx *gin.Context)  {
 			"result": result,
 		})
 	}
+}
+
+// 修改密码
+func BussinessUpdatePassW(ctx *gin.Context)  {
+	result := &model.ResultModel{
+		Code:    200,
+		Message: "修改成功",
+		Data:    nil,
+	}
+	id := ctx.Param("id")
+
+	i, e := strconv.Atoi(id)
+	if e != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"result": model.ResultModel{
+				Code:    http.StatusBadRequest,
+				Message: "id 不是 int 类型, id 转换失败",
+				Data:    e.Error(),
+			},
+		})
+		log.Panicln("id 不是 int 类型, id 转换失败", e.Error())
+	}
+	user := model.BussinessModel{
+		Id: i,
+	}
+	if e := ctx.BindJSON(&user); e != nil {
+		result.Message = "数据绑定失败"
+		result.Code = http.StatusUnauthorized
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"result": result,
+		})
+	}
+
+	flag:=user.UpdatePassW()
+
+	if !flag {
+		result.Message="修改失败"
+	}
+	ctx.JSON(http.StatusUnauthorized, gin.H{
+		"result": result,
+	})
+
+	fmt.Println(flag)
 }

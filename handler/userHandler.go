@@ -72,7 +72,8 @@ func CreateJwt(ctx *gin.Context)  {
 	}
 
 	u:= user.QueryByUsername()
-	if u.Password == user.Password {
+
+	if u.Name!="" && u.Password == user.Password {
 		expiresTime := time.Now().Unix() + int64(authConfig.OneDayOfHours)
 		claims := jwt.StandardClaims{
 			Audience:  user.Name,     // 受众

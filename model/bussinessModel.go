@@ -2,7 +2,6 @@ package model
 
 import (
 	"back_end/config/initDB"
-	"fmt"
 )
 
 type BussinessModel struct {
@@ -26,9 +25,15 @@ func (user BussinessModel) Insert() int {
 
 func (user BussinessModel) QueryByUsername() BussinessModel {
 	var users BussinessModel
-	fmt.Println(user)
 	initDB.Db.Where("name = ?", user.Name).Find(&users)
-	fmt.Println("dasjdas",users)
 	return users
 }
 
+//修改密码
+func (user BussinessModel) UpdatePassW() bool {
+	update:=initDB.Db.Model(&user).Update("password", user.Password)
+	if update.Error !=nil{
+		return  false
+	}
+	return true
+}

@@ -35,6 +35,7 @@ func SetupRouter() *gin.Engine {
 	{
 		bussinessapi.POST("/login",handler.BussinessCreateJwt)
 		bussinessapi.POST("/register",handler.BussinessRegister)
+		bussinessapi.POST("/updatePassW/:id",handler.BussinessUpdatePassW)
 	}
 
 
