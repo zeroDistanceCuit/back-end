@@ -12,7 +12,7 @@
 
 - [x] 中间件的开发，token验证
 - [x] 数据库进行基本设计
-- [] 商家登录注册
+- [x] 商家登录注册
 - [] 考虑分页https://blog.csdn.net/linux_player_c/article/details/82351934
 - [] 聊天模块的加入
 - [] 考虑文件的传输
