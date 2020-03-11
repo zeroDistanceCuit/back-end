@@ -2,7 +2,6 @@ package model
 
 import (
 	"back_end/config/initDB"
-	"fmt"
 )
 
 type ShopsModel struct {
@@ -39,7 +38,6 @@ func (shops ShopsModel) Search() ShopsModel{
 
 //更新商品数量
 func (shops ShopsModel) Update()  bool{
-	fmt.Println(shops)
 	update:=initDB.Db.Model(&shops).Update("nums",shops.Nums)
 	if update.Error!=nil{
 		return false

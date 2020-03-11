@@ -90,7 +90,6 @@ func DeleteShops(ctx *gin.Context){
 	num:=shops.Nums
 
 	shopEx:=shops.Search()
-	fmt.Println(shopEx.Nums)
 	shopEx.Nums-=num
 
 	flag:=shopEx.Update()
