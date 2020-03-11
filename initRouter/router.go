@@ -39,7 +39,10 @@ func SetupRouter() *gin.Engine {
 		bussinessapi.GET(("/getOneBussiness/:id"),handler.GetOneBussiness)
 	}
 
-
+	shopsApi:=router.Group("/shops")
+	{
+		shopsApi.GET("/search",handler.ShopSearch)
+	}
 
 	//swag集成
 	//url := ginSwagger.URL("http://localhost:2333/swagger/doc.json")
