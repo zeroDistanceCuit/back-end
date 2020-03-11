@@ -1,10 +1,13 @@
 package model
 
-import "back_end/config/initDB"
+import (
+	"back_end/config/initDB"
+	"fmt"
+)
 
 type ShopsModel struct {
 	Id int
-	BussinessId BussinessModel
+	BussinessId int
 	GoodsId int
 	Nums int
 }
@@ -21,16 +24,27 @@ func (shops ShopsModel) Insert() int {
 	return shops.Id
 }
 
-//联立查询
-func (shops ShopsModel) FindById() ShopsModel {
-	initDB.Db.First(&shops,shops.Id)
-	return shops
+func (shops ShopsModel) Search() ShopsModel{
+	var shopsEx ShopsModel
+	initDB.Db.Where("bussiness_id=? and goods_id=?",shops.BussinessId,shops.GoodsId).Find(&shopsEx)
+	if shopsEx.BussinessId>0{
+		return shopsEx
+	}else{
+		id:=shops.Insert()
+		shops.Id=id
+		shops.Nums=0
+		return shops
+	}
 }
 
-func (shops ShopsModel) SearchByName() []ShopsModel {
-	var shopsArr []ShopsModel
-	//initDB.Db.Where("name=?",shops.)
-	return shopsArr
+//更新商品数量
+func (shops ShopsModel) Update()  bool{
+	fmt.Println(shops)
+	update:=initDB.Db.Model(&shops).Update("nums",shops.Nums)
+	if update.Error!=nil{
+		return false
+	}
+	return true
 }
 
 

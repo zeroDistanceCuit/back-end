@@ -2,6 +2,7 @@ package handler
 
 import (
 	"back_end/model"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -27,5 +28,78 @@ func ShopSearch(ctx *gin.Context){
 	}
 	ctx.JSON(http.StatusOK,gin.H{
 		"result":result,
+	})
+}
+
+//给店铺增加商品
+//先查出来，有则加无则创建
+//需要考虑是否含有本条记录
+func AddShops(ctx *gin.Context){
+	shops := &model.ShopsModel{}
+	result := &model.ResultModel{
+		Code:    200,
+		Message: "新增失败",
+		Data:    nil,
+	}
+
+	if e:=ctx.BindJSON(&shops);e!=nil{
+		result.Message = "数据绑定失败"
+		result.Code = http.StatusUnauthorized
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"result": result,
+		})
+	}
+
+	num:=shops.Nums
+
+	shopEx:=shops.Search()
+fmt.Println(shopEx.Nums)
+	shopEx.Nums+=num
+
+	flag:=shopEx.Update()
+
+	if flag{
+		result.Message="新增成功"
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"result": result,
+	})
+}
+
+//TODO 未测试
+//减少商品
+//先查出来，有则加无则创建
+//需要考虑是否含有本条记录
+func DeleteShops(ctx *gin.Context){
+	shops := &model.ShopsModel{}
+	result := &model.ResultModel{
+		Code:    200,
+		Message: "新增失败",
+		Data:    nil,
+	}
+
+	if e:=ctx.BindJSON(&shops);e!=nil{
+		result.Message = "数据绑定失败"
+		result.Code = http.StatusUnauthorized
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"result": result,
+		})
+	}
+
+	num:=shops.Nums
+
+	shopEx:=shops.Search()
+	fmt.Println(shopEx.Nums)
+	shopEx.Nums-=num
+
+	flag:=shopEx.Update()
+
+	if flag{
+		result.Message="新增成功"
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"result": result,
 	})
 }
