@@ -16,11 +16,12 @@ func ShopSearch(ctx *gin.Context){
 	}
 
 	goods.Name=ctx.DefaultQuery("name","goods")
+	goods.Type=ctx.Query("type")
 	goodsArr:=goods.FindByName()
 
-	//TODO 查询类型还没有加入
+	// 查询类型还没有加入
 	//TODO 加入正则表达式，正则搜索相关内容
-	if goodsArr!=nil{
+	if len(goodsArr)>= 1 {
 		result.Message="查询成功"
 		result.Data=goodsArr
 	}

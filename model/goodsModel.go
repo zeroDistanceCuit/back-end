@@ -1,6 +1,8 @@
 package model
 
-import "back_end/config/initDB"
+import (
+	"back_end/config/initDB"
+)
 
 type GoodsModel struct {
 	Id int
@@ -17,6 +19,6 @@ func (goods GoodsModel) TableName() string {
 func (goods GoodsModel) FindByName() []GoodsModel {
 	var goodsArr []GoodsModel
 
-	initDB.Db.Where("name=?",goods.Name).Find(&goodsArr)
+	initDB.Db.Where("name=? and type=?",goods.Name,goods.Type).Find(&goodsArr)
 	return goodsArr
 }
