@@ -4,7 +4,9 @@ import (
 	"back_end/model"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
+	"strconv"
 )
 
 //获取商品信息
@@ -67,7 +69,7 @@ fmt.Println(shopEx.Nums)
 	})
 }
 
-//TODO 未测试
+//测试
 //减少商品
 //先查出来，有则加无则创建
 //需要考虑是否含有本条记录
@@ -100,5 +102,39 @@ func DeleteShops(ctx *gin.Context){
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"result": result,
+	})
+}
+
+// 关联查询
+
+func SearchAllShops(ctx *gin.Context){
+	shopsInfo:=&model.ShopsModel{}
+	result := &model.ResultModel{
+		Code:    200,
+		Message: "查询失败",
+		Data:    nil,
+	}
+
+	bussinessId:=ctx.Query("bussinessId")
+	i, e := strconv.Atoi(bussinessId)
+	if e != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"result": model.ResultModel{
+				Code:    http.StatusBadRequest,
+				Message: "id 不是 int 类型, id 转换失败",
+				Data:    e.Error(),
+			},
+		})
+		log.Panicln("id 不是 int 类型, id 转换失败", e.Error())
+	}
+
+	shopsInfo.BussinessId=i
+
+	shopsInfoArr:=shopsInfo.SearchByUserId()
+
+	fmt.Println(shopsInfoArr)
+	result.Data=shopsInfoArr
+	ctx.JSON(http.StatusOK,gin.H{
+		"result":result,
 	})
 }
