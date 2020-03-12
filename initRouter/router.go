@@ -44,6 +44,7 @@ func SetupRouter() *gin.Engine {
 		shopsApi.GET("/search",handler.ShopSearch)
 		shopsApi.POST("/addShops",handler.AddShops)
 		shopsApi.GET("/searchByUserId",handler.SearchAllShops)
+		shopsApi.POST("/updateShops",handler.UpdateShops)
 	}
 
 	//swag集成

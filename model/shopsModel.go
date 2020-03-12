@@ -2,7 +2,6 @@ package model
 
 import (
 	"back_end/config/initDB"
-	"go/types"
 )
 
 type ShopsModel struct {
@@ -54,10 +53,10 @@ func (shops ShopsModel) Update()  bool{
 }
 
 //查找商品信息
-func (shops ShopsModel) SearchByBussinessId() []GoodsModel{
-	var goodsArr []GoodsModel
-	//initDB.Db
-}
+//func (shops ShopsModel) SearchByBussinessId() []GoodsModel{
+//	var goodsArr []GoodsModel
+//	//initDB.Db
+//}
 
 
 

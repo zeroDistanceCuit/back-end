@@ -1,9 +1,10 @@
 package handler
 
 import (
+	"back_end/config/initDB"
 	"back_end/model"
-	"fmt"
 	"github.com/gin-gonic/gin"
+	_ "gopkg.in/go-playground/validator.v9"
 	"log"
 	"net/http"
 	"strconv"
@@ -55,7 +56,7 @@ func AddShops(ctx *gin.Context){
 	num:=shops.Nums
 
 	shopEx:=shops.Search()
-fmt.Println(shopEx.Nums)
+
 	shopEx.Nums+=num
 
 	flag:=shopEx.Update()
@@ -73,11 +74,11 @@ fmt.Println(shopEx.Nums)
 //减少商品
 //先查出来，有则加无则创建
 //需要考虑是否含有本条记录
-func DeleteShops(ctx *gin.Context){
+func UpdateShops(ctx *gin.Context){
 	shops := &model.ShopsModel{}
 	result := &model.ResultModel{
 		Code:    200,
-		Message: "新增失败",
+		Message: "修改失败",
 		Data:    nil,
 	}
 
@@ -88,16 +89,16 @@ func DeleteShops(ctx *gin.Context){
 			"result": result,
 		})
 	}
-
 	num:=shops.Nums
 
 	shopEx:=shops.Search()
-	shopEx.Nums-=num
+
+	shopEx.Nums=num
 
 	flag:=shopEx.Update()
 
 	if flag{
-		result.Message="新增成功"
+		result.Message="修改成功"
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
@@ -106,12 +107,11 @@ func DeleteShops(ctx *gin.Context){
 }
 
 // 关联查询
-
 func SearchAllShops(ctx *gin.Context){
 	shopsInfo:=&model.ShopsModel{}
 	result := &model.ResultModel{
 		Code:    200,
-		Message: "查询失败",
+		Message: "查询成功",
 		Data:    nil,
 	}
 
@@ -132,8 +132,16 @@ func SearchAllShops(ctx *gin.Context){
 
 	shopsInfoArr:=shopsInfo.SearchByUserId()
 
-	fmt.Println(shopsInfoArr)
-	result.Data=shopsInfoArr
+	goodsInfoArr := []model.GoodsModel{}
+	for _, v := range shopsInfoArr {
+		temp := v // 其实很简单 引入一个临时局部变量就可以了，这样就可以将每次的值存储到该变量地址上
+		goodsInfo:= model.GoodsModel{}
+		initDB.Db.Model(&temp).Related(&goodsInfo,"GoodsId")
+		goodsInfo.Num=temp.Nums
+		goodsInfoArr=append(goodsInfoArr,goodsInfo)
+	}
+
+	result.Data=goodsInfoArr
 	ctx.JSON(http.StatusOK,gin.H{
 		"result":result,
 	})

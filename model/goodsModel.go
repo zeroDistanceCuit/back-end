@@ -10,6 +10,7 @@ type GoodsModel struct {
 	Name string
 	Type string
 	Money string
+	Num int
 }
 
 func (goods GoodsModel) TableName() string {

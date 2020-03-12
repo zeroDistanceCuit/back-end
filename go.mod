@@ -14,5 +14,6 @@ require (
 	github.com/swaggo/swag v1.6.5
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2 // indirect
 	golang.org/x/tools v0.0.0-20200214225126-5916a50871fb // indirect
+	gopkg.in/go-playground/validator.v9 v9.29.1
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
