@@ -7,7 +7,9 @@ import (
 type ShopsModel struct {
 	Id int
 	BussinessId int
+	Bussiness BussinessModel
 	GoodsId int
+	Goods GoodsModel
 	Nums int
 }
 
