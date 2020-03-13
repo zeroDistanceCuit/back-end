@@ -10,41 +10,41 @@ func SetupRouter() *gin.Engine {
 
 	//中间件
 	//router := gin.Default()
-	router:=gin.New()
-	router.Use(middleware.Logger(),gin.Recovery())
+	router := gin.New()
+	router.Use(middleware.Logger(), gin.Recovery())
 
 	test := router.Group("/test")
 	{
 		test.GET("", handler.Test)
-		test.POST("/insert",handler.Insert)
-		test.GET("/findAll",handler.GetAll)
-		test.DELETE("/delete/:id",handler.Delete)
-		test.GET("/getOne/:id",handler.GetOne)
-		test.POST("/update/:id",handler.Update)
-	}
-	
-
-	api:=router.Group("/user")
-	{
-		api.POST("/login",handler.CreateJwt)
-		api.POST("/register",handler.Register)
-		api.GET("/findAll",middleware.Auth(),handler.GetAll)
+		test.POST("/insert", handler.Insert)
+		test.GET("/findAll", handler.GetAll)
+		test.DELETE("/delete/:id", handler.Delete)
+		test.GET("/getOne/:id", handler.GetOne)
+		test.POST("/update/:id", handler.Update)
 	}
 
-	bussinessapi:=router.Group("/bussiness")
+	api := router.Group("/user")
 	{
-		bussinessapi.POST("/login",handler.BussinessCreateJwt)
-		bussinessapi.POST("/register",handler.BussinessRegister)
-		bussinessapi.POST("/updatePassW/:id",handler.BussinessUpdatePassW)
-		bussinessapi.GET(("/getOneBussiness/:id"),handler.GetOneBussiness)
+		api.POST("/login", handler.CreateJwt)
+		api.POST("/register", handler.Register)
+		api.GET("/findAll", middleware.Auth(), handler.GetAll)
 	}
 
-	shopsApi:=router.Group("/shops")
+	bussinessapi := router.Group("/bussiness")
 	{
-		shopsApi.GET("/search",handler.ShopSearch)
-		shopsApi.POST("/addShops",handler.AddShops)
-		shopsApi.GET("/searchByUserId",handler.SearchAllShops)
-		shopsApi.POST("/updateShops",handler.UpdateShops)
+		bussinessapi.POST("/login", handler.BussinessCreateJwt)
+		bussinessapi.POST("/register", handler.BussinessRegister)
+		bussinessapi.POST("/updatePassW/:id", handler.BussinessUpdatePassW)
+		bussinessapi.GET(("/getOneBussiness/:id"), handler.GetOneBussiness)
+	}
+
+	shopsApi := router.Group("/shops")
+	{
+		shopsApi.GET("/search", handler.ShopSearch)
+		shopsApi.POST("/addShops", handler.AddShops)
+		shopsApi.GET("/searchByUserId", handler.SearchAllShops)
+		shopsApi.POST("/updateShops", handler.UpdateShops)
+		shopsApi.GET("/SearchShopsByType", handler.SearchShopsByType)
 	}
 
 	//swag集成
@@ -53,4 +53,3 @@ func SetupRouter() *gin.Engine {
 
 	return router
 }
-

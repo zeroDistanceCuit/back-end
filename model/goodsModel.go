@@ -5,12 +5,12 @@ import (
 )
 
 type GoodsModel struct {
-	Id int
+	Id           int
 	GoodsModelId int
-	Name string
-	Type string
-	Money string
-	Num int
+	Name         string
+	Type         string
+	Money        string
+	Num          int
 }
 
 func (goods GoodsModel) TableName() string {
@@ -19,7 +19,11 @@ func (goods GoodsModel) TableName() string {
 
 func (goods GoodsModel) FindByName() []GoodsModel {
 	var goodsArr []GoodsModel
-
-	initDB.Db.Where("name=? and type=?",goods.Name,goods.Type).Find(&goodsArr)
+	initDB.Db.Where("name=? and type=?", goods.Name, goods.Type).Find(&goodsArr)
 	return goodsArr
+}
+
+func (goods GoodsModel) FindById() GoodsModel {
+	initDB.Db.First(&goods, goods.Id)
+	return goods
 }
