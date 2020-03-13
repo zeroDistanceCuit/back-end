@@ -2,6 +2,7 @@ package model
 
 import (
 	"back_end/config/initDB"
+	"fmt"
 )
 
 type BussinessModel struct {
@@ -16,6 +17,7 @@ func (user BussinessModel) TableName() string {
 }
 
 func (user BussinessModel) Insert() int {
+	fmt.Println("user")
 	create:=initDB.Db.Create(&user)
 	if create.Error!=nil{
 		return 0

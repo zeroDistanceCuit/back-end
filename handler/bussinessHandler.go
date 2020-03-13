@@ -30,17 +30,8 @@ func BussinessRegister(ctx *gin.Context)  {
 	if u.Name != ""{
 		message="该账号已存在，请另起名字"
 	}else{
-		if e := ctx.BindJSON(&user); e == nil{
-			id=user.Insert()
-			message="用户"+user.Name+",注册成功"
-		}else {
-			message = "数据绑定失败"
-			code = http.StatusUnauthorized
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"result": "error",
-			})
-			log.Panicln(e)
-		}
+		id=user.Insert()
+		message="用户"+user.Name+",注册成功"
 	}
 
 	result:=model.ResultModel{
