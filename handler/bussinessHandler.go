@@ -87,14 +87,14 @@ func BussinessCreateJwt(ctx *gin.Context)  {
 			})
 		} else {
 			result.Message = "登录失败"
-			result.Code = http.StatusOK
+			result.Code = http.StatusBadRequest
 			ctx.JSON(result.Code, gin.H{
 				"result": result,
 			})
 		}
 	} else {
 		result.Message = "登录失败"
-		result.Code = http.StatusOK
+		result.Code = http.StatusBadRequest
 		ctx.JSON(result.Code, gin.H{
 			"result": result,
 		})

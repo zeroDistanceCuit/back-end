@@ -40,11 +40,12 @@ func SetupRouter() *gin.Engine {
 
 	shopsApi := router.Group("/shops")
 	{
+		//TODO　ｑｄ测试
 		shopsApi.GET("/search", handler.ShopSearch)
 		shopsApi.POST("/addShops", handler.AddShops)
 		shopsApi.GET("/searchByUserId", handler.SearchAllShops)
 		shopsApi.POST("/updateShops", handler.UpdateShops)
-		shopsApi.GET("/SearchShopsByType", handler.SearchShopsByType)
+		shopsApi.GET("/searchByName",handler.ShopSearchByName)
 	}
 
 	//swag集成

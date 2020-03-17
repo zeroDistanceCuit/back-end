@@ -19,9 +19,32 @@ func ShopSearch(ctx *gin.Context) {
 		Data:    nil,
 	}
 
-	goods.Name = ctx.DefaultQuery("name", "goods")
+	goods.Name = ctx.Query("name")
 	goods.Type = ctx.Query("type")
 	goodsArr := goods.FindByName()
+
+	// 查询类型还没有加入
+	//TODO 加入正则表达式，正则搜索相关内容
+	if len(goodsArr) >= 1 {
+		result.Message = "查询成功"
+		result.Data = goodsArr
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"result": result,
+	})
+}
+
+// 根据名称关键字搜索
+func ShopSearchByName(ctx *gin.Context) {
+	goods := &model.GoodsModel{}
+	result := &model.ResultModel{
+		Code:    200,
+		Message: "查询失败",
+		Data:    nil,
+	}
+
+	goods.Name = ctx.Query("name")
+	goodsArr := goods.FindOnlyByName()
 
 	// 查询类型还没有加入
 	//TODO 加入正则表达式，正则搜索相关内容
@@ -147,8 +170,8 @@ func SearchAllShops(ctx *gin.Context) {
 	})
 }
 
+//TODO　没作用，用shopsearch替代了
 //根据商品类型获取商品
-
 func SearchShopsByType(ctx *gin.Context) {
 	shops := model.ShopsModel{}
 	result := &model.ResultModel{
