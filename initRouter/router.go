@@ -41,11 +41,17 @@ func SetupRouter() *gin.Engine {
 	shopsApi := router.Group("/shops")
 	{
 		//TODO　ｑｄ测试
+		//商家添加商品使用
 		shopsApi.GET("/search", handler.ShopSearch)
 		shopsApi.POST("/addShops", handler.AddShops)
 		shopsApi.GET("/searchByUserId", handler.SearchAllShops)
 		shopsApi.POST("/updateShops", handler.UpdateShops)
+		//TODO 用户查询商品信息使用，目测无用api
 		shopsApi.GET("/searchByName",handler.ShopSearchByName)
+		//用于目录分类
+		shopsApi.GET("/searchByType",handler.SearchShopsByType)
+		// 用户根据商品名称查询
+		shopsApi.GET("/searchByShopName",handler.SearchByShopName)
 	}
 
 	//swag集成

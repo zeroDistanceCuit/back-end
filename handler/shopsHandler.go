@@ -7,10 +7,12 @@ import (
 	_ "gopkg.in/go-playground/validator.v9"
 	"log"
 	"net/http"
+	"regexp"
 	"strconv"
 )
 
 //获取商品信息
+//商家获取信息
 func ShopSearch(ctx *gin.Context) {
 	goods := &model.GoodsModel{}
 	result := &model.ResultModel{
@@ -35,6 +37,7 @@ func ShopSearch(ctx *gin.Context) {
 }
 
 // 根据名称关键字搜索
+//用户获取信息，目前无用
 func ShopSearchByName(ctx *gin.Context) {
 	goods := &model.GoodsModel{}
 	result := &model.ResultModel{
@@ -47,7 +50,7 @@ func ShopSearchByName(ctx *gin.Context) {
 	goodsArr := goods.FindOnlyByName()
 
 	// 查询类型还没有加入
-	//TODO 加入正则表达式，正则搜索相关内容
+	// 加入正则表达式，正则搜索相关内容
 	if len(goodsArr) >= 1 {
 		result.Message = "查询成功"
 		result.Data = goodsArr
@@ -170,7 +173,6 @@ func SearchAllShops(ctx *gin.Context) {
 	})
 }
 
-//TODO　没作用，用shopsearch替代了
 //根据商品类型获取商品
 func SearchShopsByType(ctx *gin.Context) {
 	shops := model.ShopsModel{}
@@ -208,4 +210,44 @@ func SearchShopsByType(ctx *gin.Context) {
 		"result": result,
 	})
 
+}
+
+//用户根据商品名称查询相关商品
+func SearchByShopName(ctx *gin.Context)  {
+	shops := model.ShopsModel{}
+	result := &model.ResultModel{
+		Code:    200,
+		Message: "查询成功",
+		Data:    nil,
+	}
+
+	shopName:=ctx.Query("name")
+
+	shopInfoArr:=shops.GetAllInfo()
+	shopsInfoList:=[]model.ShopsModel{}
+
+	for _, v := range shopInfoArr {
+		temp := v // 其实很简单 引入一个临时局部变量就可以了，这样就可以将每次的值存储到该变量地址上
+		shopsTemp := model.ShopsModel{}
+		goods := model.GoodsModel{
+			Id:temp.GoodsId,
+			Num: temp.Nums,
+		}
+		user := model.BussinessModel{
+			Id: temp.BussinessId,
+		}
+		userInfo := user.GetOneBussinessInfo()
+		userInfo.Password = "******"
+
+		shopsTemp.Bussiness=userInfo
+		reg,_:=regexp.Compile(shopName)
+		if goodsInfo:=goods.FindById();len(reg.FindAllString(goodsInfo.Name,-1))!=0{
+			shopsTemp.Goods=goodsInfo
+		}
+		shopsInfoList=append(shopsInfoList,shopsTemp)
+	}
+	result.Data = shopsInfoList
+	ctx.JSON(http.StatusOK, gin.H{
+		"result": result,
+	})
 }
