@@ -14,6 +14,7 @@ type GoodsModel struct {
 	Type         string
 	Money        string
 	Num          int
+	Img 		string
 }
 
 func (goods GoodsModel) TableName() string {
