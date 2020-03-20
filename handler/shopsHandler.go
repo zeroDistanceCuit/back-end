@@ -213,7 +213,7 @@ func SearchShopsByType(ctx *gin.Context) {
 }
 
 //用户根据商品名称查询相关商品
-func SearchByShopName(ctx *gin.Context)  {
+func SearchByShopName(ctx *gin.Context) {
 	shops := model.ShopsModel{}
 	result := &model.ResultModel{
 		Code:    200,
@@ -221,16 +221,16 @@ func SearchByShopName(ctx *gin.Context)  {
 		Data:    nil,
 	}
 
-	shopName:=ctx.Query("name")
+	shopName := ctx.Query("name")
 
-	shopInfoArr:=shops.GetAllInfo()
-	shopsInfoList:=[]model.ShopsModel{}
+	shopInfoArr := shops.GetAllInfo()
+	shopsInfoList := []model.ShopsModel{}
 
 	for _, v := range shopInfoArr {
 		temp := v // 其实很简单 引入一个临时局部变量就可以了，这样就可以将每次的值存储到该变量地址上
 		shopsTemp := model.ShopsModel{}
 		goods := model.GoodsModel{
-			Id:temp.GoodsId,
+			Id:  temp.GoodsId,
 			Num: temp.Nums,
 		}
 		user := model.BussinessModel{
@@ -239,12 +239,13 @@ func SearchByShopName(ctx *gin.Context)  {
 		userInfo := user.GetOneBussinessInfo()
 		userInfo.Password = "******"
 
-		shopsTemp.Bussiness=userInfo
-		reg,_:=regexp.Compile(shopName)
-		if goodsInfo:=goods.FindById();len(reg.FindAllString(goodsInfo.Name,-1))!=0{
-			shopsTemp.Goods=goodsInfo
+		shopsTemp.Bussiness = userInfo
+		reg, _ := regexp.Compile(shopName)
+		goodsInfo := goods.FindById()
+		if len(reg.FindAllString(goodsInfo.Name, -1)) != 0 {
+			shopsTemp.Goods = goodsInfo
+			shopsInfoList = append(shopsInfoList, shopsTemp)
 		}
-		shopsInfoList=append(shopsInfoList,shopsTemp)
 	}
 	result.Data = shopsInfoList
 	ctx.JSON(http.StatusOK, gin.H{
