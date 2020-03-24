@@ -54,6 +54,14 @@ func SetupRouter() *gin.Engine {
 		shopsApi.GET("/searchByShopName",handler.SearchByShopName)
 	}
 
+	cartApi:=router.Group("/cart")
+	{
+		cartApi.POST("/add",handler.InsertNewShop)
+		cartApi.GET("/search",handler.GetShopCartList)
+		cartApi.POST("/order",handler.Payment)
+		cartApi.POST("/remove",handler.RemoveCart)
+	}
+
 	//swag集成
 	//url := ginSwagger.URL("http://localhost:2333/swagger/doc.json")
 	//router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
