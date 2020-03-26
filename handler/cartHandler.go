@@ -25,8 +25,14 @@ func InsertNewShop(ctx *gin.Context){
 		})
 	}
 
-	// 将商家库存减少[x],成交时减少，避免返回商
-	cart.Insert()
+	// 判断是否已添加到购物车
+	flag:=cart.SearchOrderByUserId()
+
+	if flag{
+		result.Message="该商品已存在于购物车"
+	}else {
+		cart.Insert()
+	}
 
 	ctx.JSON(http.StatusOK,gin.H{
 		"result":result,
@@ -59,6 +65,27 @@ func GetShopCartList(ctx *gin.Context){
 	cart.UserId=i
 	cart.Status=ctx.Query("status")
 	cartList:=cart.SearchByUserId()
+
+	for n,v:=range cartList{
+		temp:=v
+		shopEx:=model.ShopsModel{
+			Id:          temp.ShopsId,
+		}
+		shop:=shopEx.GetById()
+		goodEx:=model.GoodsModel{
+			Id:           shop.GoodsId,
+		}
+		good:=goodEx.FindById()
+		shop.Goods=good
+		bussinessEx:=model.BussinessModel{
+			Id:       temp.BussinessId,
+		}
+		bussiness:=bussinessEx.GetOneBussinessInfo()
+		shop.Bussiness=bussiness
+		cartList[n].Bussiness=bussiness
+		cartList[n].Shops=shop
+	}
+
 	result.Data=cartList
 	ctx.JSON(http.StatusOK,gin.H{
 		"result":result,

@@ -2,7 +2,6 @@ package model
 
 import (
 	"back_end/config/initDB"
-	"fmt"
 )
 
 type ShopsModel struct {
@@ -64,7 +63,6 @@ func (shops ShopsModel) GetAllInfo() []ShopsModel {
 
 //根据Id查询
 func (shops ShopsModel) GetById() ShopsModel {
-	fmt.Println(shops)
 	initDB.Db.First(&shops,shops.Id)
 	return shops
 }

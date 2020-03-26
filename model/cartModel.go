@@ -62,3 +62,13 @@ func (cart CartModel)Delete() bool{
 		return false
 	}
 }
+
+func (cart CartModel)SearchOrderByUserId() bool{
+	var cartEx CartModel
+	initDB.Db.Where("user_id=? and shops_id =? and status=?",cart.UserId,cart.ShopsId,cart.Status).Find(&cartEx)
+	if cartEx.Id==0{
+		return false
+	}else{
+		return true
+	}
+}

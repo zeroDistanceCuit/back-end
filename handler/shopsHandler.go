@@ -202,6 +202,7 @@ func SearchShopsByType(ctx *gin.Context) {
 		if goodsInfo := goods.FindById(); goodsInfo.Type == shopType {
 			shopsTemp.Goods = goodsInfo
 			shopsTemp.Bussiness = userInfo
+			shopsTemp.Id=temp.Id
 			shopsInfoList = append(shopsInfoList, shopsTemp)
 		}
 	}
@@ -244,6 +245,7 @@ func SearchByShopName(ctx *gin.Context) {
 		goodsInfo := goods.FindById()
 		if len(reg.FindAllString(goodsInfo.Name, -1)) != 0 {
 			shopsTemp.Goods = goodsInfo
+			shopsTemp.Id=temp.Id
 			shopsInfoList = append(shopsInfoList, shopsTemp)
 		}
 	}
