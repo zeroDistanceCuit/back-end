@@ -2,7 +2,6 @@ package model
 
 import (
 	"back_end/config/initDB"
-	"fmt"
 	_ "reflect"
 	"regexp"
 )
@@ -43,7 +42,6 @@ func (goods GoodsModel) FindByName() []GoodsModel {
 		}
 	}
 	}
-	fmt.Println(result)
 	return result
 }
 

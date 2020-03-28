@@ -61,7 +61,7 @@ func ShopSearchByName(ctx *gin.Context) {
 }
 
 //给店铺增加商品
-//先查出来，有则加无则创建
+//先查出来，有则加无则创建F
 //需要考虑是否含有本条记录
 func AddShops(ctx *gin.Context) {
 	shops := &model.ShopsModel{}

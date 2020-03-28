@@ -35,7 +35,12 @@ func (cart CartModel) Insert() int {
 
 func (cart CartModel)SearchByUserId() []CartModel {
 	var cartList []CartModel
-	initDB.Db.Where("user_id=? and status=?",cart.UserId,cart.Status).Find(&cartList)
+	if cart.BussinessId == 0{
+		initDB.Db.Where("user_id=? and status=?",cart.UserId,cart.Status).Find(&cartList)
+	}
+	if cart.UserId == 0{
+		initDB.Db.Where("bussiness_id=? and status=?",cart.BussinessId,cart.Status).Find(&cartList)
+	}
 	return cartList
 }
 

@@ -39,7 +39,7 @@ func InsertNewShop(ctx *gin.Context){
 	})
 }
 
-// 查询自己的购物车
+// 查询自己的购物车,商家也可以查询订单
 func GetShopCartList(ctx *gin.Context){
 	cart := &model.CartModel{}
 	result := &model.ResultModel{
@@ -48,7 +48,14 @@ func GetShopCartList(ctx *gin.Context){
 		Data:    nil,
 	}
 
-	userId:=ctx.Query("userId")
+	buyId:=ctx.Query("userId")
+	bussinessId:=ctx.Query("bussinessId")
+	userId:="0"
+	if buyId == "0"{
+		userId=bussinessId
+	}else {
+		userId=buyId
+	}
 
 	i, e := strconv.Atoi(userId)
 	if e != nil {
@@ -62,7 +69,11 @@ func GetShopCartList(ctx *gin.Context){
 		log.Panicln("id 不是 int 类型, id 转换失败", e.Error())
 	}
 
-	cart.UserId=i
+	if buyId == "0"{
+		cart.BussinessId=i
+	}else {
+		cart.UserId=i
+	}
 	cart.Status=ctx.Query("status")
 	cartList:=cart.SearchByUserId()
 
@@ -115,19 +126,32 @@ func Payment(ctx *gin.Context)  {
 	shopEx.Nums-=cart.Num
 	shopEx.Update()
 
-	status:=cart.UpdateByOrder()
-
-	if !status{
-		result.Message = "付款失败"
+	//订单都是直接添加，不是更新
+	//status:=cart.UpdateByOrder()
+	if flag:=cart.Delete();flag == false{
+		result.Message = "移除失败"
 		result.Code = http.StatusUnauthorized
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"result": result,
 		})
 	}else{
+		cart.Insert()
 		ctx.JSON(http.StatusOK,gin.H{
 			"result":result,
 		})
 	}
+
+	//if !status{
+	//	result.Message = "付款失败"
+	//	result.Code = http.StatusUnauthorized
+	//	ctx.JSON(http.StatusUnauthorized, gin.H{
+	//		"result": result,
+	//	})
+	//}else{
+	//	ctx.JSON(http.StatusOK,gin.H{
+	//		"result":result,
+	//	})
+	//}
 }
 
 //移除购物车
