@@ -6,6 +6,7 @@ import (
 
 type UserModel struct {
 	Id      int
+	UserModelId int
 	Name    string
 	Password string
 	Phone   string
@@ -38,4 +39,9 @@ func (user UserModel) QueryByUsername() UserModel {
 	var users UserModel
 	initDB.Db.Where("name = ?", user.Name).Find(&users)
 	return users
+}
+
+func (user UserModel)QueryById() UserModel {
+	initDB.Db.First(&user,user.Id)
+	return user
 }

@@ -27,7 +27,8 @@ func SetupRouter() *gin.Engine {
 	{
 		api.POST("/login", handler.CreateJwt)
 		api.POST("/register", handler.Register)
-		api.GET("/findAll", middleware.Auth(), handler.GetAll)
+		api.GET("/getUserInfo",handler.GetUserInfo)
+		api.GET("/getUserFlesh",handler.GetUserFleshModel)
 	}
 
 	bussinessapi := router.Group("/bussiness")
@@ -52,6 +53,8 @@ func SetupRouter() *gin.Engine {
 		shopsApi.GET("/searchByType",handler.SearchShopsByType)
 		// 用户根据商品名称查询
 		shopsApi.GET("/searchByShopName",handler.SearchByShopName)
+		//	商品模型获取
+		shopsApi.GET("/searchModelById",handler.GetShopFleshModel)
 	}
 
 	cartApi:=router.Group("/cart")
@@ -59,7 +62,7 @@ func SetupRouter() *gin.Engine {
 		cartApi.POST("/add",handler.InsertNewShop)
 		cartApi.GET("/search",handler.GetShopCartList)
 		cartApi.POST("/order",handler.Payment)
-		cartApi.POST("/remove",handler.RemoveCart)
+		cartApi.POST("/remove",middleware.Auth(),handler.RemoveCart)
 	}
 
 	//swag集成
